@@ -1,0 +1,52 @@
+{
+	"Skill":[
+		"SkillName":"",
+		"SkillShortName":"",
+		"SkillExplanation":"",
+		"SkillThumbnail":"NAME OF LOGO FILE",
+		"SkillLink":"URL",
+		"SkillRating":NUMBER,
+		"SkillLastUsed":NUMBER,
+		"ImGoodAt":BOOLEAN,
+		"SkillCategories":{
+			"Category":"Business Analysis",
+			"Category":"Business Operations", 
+			"Category":"Content Management Systems",
+			"Category":"Customer Relationship Management",
+			"Category":"Data Management",
+			"Category":"Email Administration", 
+			"Category":"General Knowledge",
+			"Category":"General System Administration", 
+			"Category":"Management",
+			"Category":"Network Administration",
+			"Category":"Programming / Scripting",
+			"Category":"System Architecture and Design", 
+			"Category":"User Applications",
+			"Category":"User Support",
+			"Category":"Web Development"
+			},
+		]
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//Skill Ratings:
+//Lower	Upper	Meaning
+//0	0	Heard of it, no knowledge
+//1	10	Conceptual Awareness
+//11	25	Novice User
+//26	75	Mediocre User
+//76	90	Advance User
+//91	99	Expert
+//100	100	The Best
+}

@@ -1,0 +1,51 @@
+body {
+  padding: 0;
+  margin: 0;
+  background-image: url(/images/IMG_4051A.jpg);
+  background: #f7f7f7;
+  /*
+  background: -moz-linear-gradient(45deg, #AED6F1 0%, #EAE0D5 100%);
+  */
+}
+
+
+* {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+
+/** Header styles **/
+
+.header {
+  background-image: url(/images/IMG_4051A.jpg);
+  height: 400px;
+  background-position: center center;
+}
+
+.navigation {
+  background-image: url(/images/IMG_4051A.jpg);
+  height: 400px;
+  background-position: center center;
+}
+
+.footer {
+  background-image: url(/images/IMG_4051A.jpg);
+  height: 400px;
+  background-position: center center;
+}
+
+
+
+
+* {
+  font-family: 'Georgia', 'Times', 'copperplate', serif;
+}
+
+a {
+  color: SeaGreen;
+  text-decoration: none;
+}
+
+img {
+  border-radius: 100%;
+}

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/main-style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<title>Justin T. Cole - Portfolio</title>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<div id="header"></div><br />
+<div id="content">
+
+
+   <!-- Page Content -->
+    <div class="container">
+        <div class="section_header">
+           Scripting Sample
+        </div>
+        <!-- Core Content -->
+        <div class="content">
+Part of the required work of a school technology worker is to ensure that all of the computers are re-imaged each summer. In a system with 1,000 student laptops (and the staff to support them) this is a daunting task. It is of the utmost importance to automate as much of the process as possible as ever minute removed from the imaging process translates into nearly half a person-week of labor. Below is several sample scripts implemented to increase efficiency of this task (circa 2011).</a>
+<br />
+<br />
+These scripts were additions to the state-provided imaging tool. They, along with a few other items, were designed to preserve user data through the imaging process and set the proper computer identification, wireless setup, printers, etc. 
+The process was started with the backup script which then launched the state reimager. After the re-image was completed the restore process was engaged, then the process to name the computer, etc, then the process to cleanup all the debris from the entire imaging process.
+<br />
+<br />
+As outlined in the commentary of the displayed scripts Justin T. Cole did not write all of the code. Justin assembled all of the code into the usable form and enhanced it with additions of his own devising.
+<br />
+<br />
+<pre>
+<code>
+—————————————————————————
+Below this line is the “Backup” script
+—————————————————————————
+#!/bin/sh
+###
+#This script was written by Justin Cole (with some assistance from a variety of people and the use of his GoogleFu).
+#It can be run from the command line (use sudo) or it can be called by the apps included in his "Better Imager"
+#It appears to work as expected but you are using it at your own risk.
+#It may be freely used/modified/etc by any school that can make use of it to enhance their Apple deployment - Please leave attribute commentary intact.
+###
+
+#This section determines whether to use verbose mode on this script or not. 
+
+#sets default state
+Verbose=No
+Voice=fred
+
+#tests for verbose-enable flag
+[ -f /Users/admin/Desktop/Scripts/Verbose_Yes ] && Verbose=Yes
+
+#if uncommented the following lines will set the voice to the contents of Verbose_Yes - commented as there is no error correction on this 
+#	if [ $Verbose = 'Yes' ]; then
+#		Voice=`cat /Users/admin/Desktop/Scripts/Verbose_Yes `
+#	fi
+
+
+diskutil eraseVolume JHFS+ My\ Backup\ Drive /Volumes/My\ Backup\ Drive 
+echo "erasing backup volume now"
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "erasing backup volume"
+	fi
+
+#capture disk usage of teacher account as "teacher" - using the ls command?
+teacher=`du -s /Users/teacher | awk '{print $1}'`
+#echo "teacher space is " $teacher
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "teacher space is " $teacher
+	fi
+
+#capture disk usage of student account as "student" - using the ls command?
+student=`du -s /Users/student | awk '{print $1}'`
+#echo "student space is " $student
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "student space is " $student
+	fi
+
+#Set needed_space to "teacher" + "student"
+needed_space=`echo $[teacher + student]`
+#echo "needed_space is " $needed_space
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "needed space is " $needed_space
+	fi
+
+#capture free space of My\ Backup\ Drive as "available"
+available=`sudo df /Volumes/My\ Backup\ Drive |grep "/dev/disk"|awk '{print $4}'`
+#echo "Available space is " $available
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "available space is " $available
+	fi
+
+#PROBLEM: requires the device number for filtering - note problem resolved because it is being run on the disk by VOLUME name so ONLY the disk that I am running it on will show up.
+
+#if the below does not work do "man test" to leanr about comparisons 
+if [ "$needed_space" -gt "$available" ] # ">" may need to be "gt"
+	then
+		echo "not enough drive space"
+		say "not enough drive space. Quitting."
+		exit
+fi
+
+#report on available space
+#extra_space=$available - $needed_space
+#echo "variable check for extra_space"
+#echo $extra_space
+#echo "end variable check"
+#echo "There is " $extra_space " more space than needed."
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "there is " $extra_space " more space than needed"
+	fi
+
+#Teacher account backup
+ditto -rsrcFork /Volumes/Macintosh\ HD/Users/teacher/ /Volumes/My\ Backup\ Drive/teacher/
+#echo "teacher account copying completed"
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "teacher account copying completed"
+	fi
+
+#Student account backup
+ditto -rsrcFork /Volumes/Macintosh\ HD/Users/student/ /Volumes/My\ Backup\ Drive/student/
+#echo "student account copying completed"
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "student account copying completed"
+	fi
+
+#echo "all copying completed"
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "all copying completed"
+	fi
+
+#receipts
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "adding receipts"
+	fi
+/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart - configure -computerinfo -set4 -4 "BACKUP"
+touch /Users/admin/Desktop/Receipts/BACKUP
+
+exit
+
+—————————————————————————
+Below this line is the “Restore” script
+—————————————————————————
+#!/bin/sh
+###
+#This script was written by Justin Cole (with some assistance from a variety of people and the use of his GoogleFu).
+#It can be run from the command line (use sudo) or it can be called by the apps included in his "Better Imager"
+#It appears to work as expected but you are using it at your own risk.
+#It may be freely used/modified/etc by any school that can make use of it to enhance their Apple deployment - Please leave attribute commentary intact.
+###
+
+#This section determines whether to use verbose mode on this script or not. 
+
+#sets default state
+Verbose=No
+Voice=fred
+
+#tests for verbose-enable flag
+[ -f /Users/admin/Desktop/Scripts/Verbose_Yes ] && Verbose=Yes
+
+#if uncommented the following lines will set the voice to the contents of Verbose_Yes - commented as there is no error correction on this 
+#	if [ $Verbose = 'Yes' ]; then
+#		Voice=`cat /Users/admin/Desktop/Scripts/Verbose_Yes `
+#	fi
+
+
+#archive complete backup
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "making full data backup on admin desktop"
+	fi
+mkdir /Users/admin/Desktop/Backup
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/ /Users/admin/Desktop/Backup/
+
+#restore Teacher Desktop
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher desktop"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Desktop /Volumes/Macintosh\ HD/Users/teacher/Desktop 
+
+#restore teacher Documents
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher documents folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Documents /Volumes/Macintosh\ HD/Users/teacher/Documents 
+
+#restore teacher Movies
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher movies folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Movies /Volumes/Macintosh\ HD/Users/teacher/Movies 
+
+#restore teacher Pictures
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher pictures folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Pictures /Volumes/Macintosh\ HD/Users/teacher/Pictures 
+
+#restore teacher Downloads
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher downloads folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Downloads /Volumes/Macintosh\ HD/Users/teacher/Downloads 
+
+#restore teacher Music
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher music folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Music /Volumes/Macintosh\ HD/Users/teacher/Music 
+
+#restore teacher MyApps
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher my apps folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/MyApps /Volumes/Macintosh\ HD/Users/teacher/MyApps 
+
+#restore teacher Firefox settings
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher fire fox settings"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Library/Application\ Support/Firefox /Volumes/Macintosh\ HD/Users/teacher/Library/Application\ Support/Firefox 
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Library/Application\ Support/Mozilla /Volumes/Macintosh\ HD/Users/teacher/Library/Application\ Support/Mozilla 
+
+#restore teacher Mail.app data
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher mail app data"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Library/Mail /Volumes/Macintosh\ HD/Users/teacher/Library/Mail 
+
+#restore teacher stickies db
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring teacher sitckies database"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/teacher/Library/StickiesDatabase /Volumes/Macintosh\ HD/Users/teacher/Library/StickiesDatabase
+
+#also Safari bookmarks
+
+
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "teacher account copying completed"
+	fi
+echo "teacher account copying completed"
+echo ""
+echo ""
+echo "beginning student restore"
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "beginning student restore"
+	fi
+
+#restore student Desktop
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student desktop"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Desktop /Volumes/Macintosh\ HD/Users/student/Desktop 
+
+#restore student Documents
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student documents folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Documents /Volumes/Macintosh\ HD/Users/student/Documents 
+
+#restore student Movies
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student movies folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Movies /Volumes/Macintosh\ HD/Users/student/Movies 
+
+#restore student Pictures
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student pictures folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Pictures /Volumes/Macintosh\ HD/Users/student/Pictures 
+
+#restore student Downloads
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student downloads folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Downloads /Volumes/Macintosh\ HD/Users/student/Downloads 
+
+#restore student Music
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student music folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Music /Volumes/Macintosh\ HD/Users/student/Music 
+
+#restore student MyApps
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student my apps folder"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/MyApps /Volumes/Macintosh\ HD/Users/student/MyApps 
+
+#restore student Firefox settings
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student fire fox settings"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Library/Application\ Support/Firefox /Volumes/Macintosh\ HD/Users/student/Library/Application\ Support/Firefox 
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Library/Application\ Support/Mozilla /Volumes/Macintosh\ HD/Users/student/Library/Application\ Support/Mozilla 
+
+#restore student Mail.app data
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student mail app data"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Library/Mail /Volumes/Macintosh\ HD/Users/student/Library/Mail 
+
+#restore teacher stickies db
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "restoring student stickies database"
+	fi
+ditto -rsrcFork /Volumes/My\ Backup\ Drive/student/Library/StickiesDatabase /Volumes/Macintosh\ HD/Users/student/Library/StickiesDatabase
+
+#also Safari bookmarks
+
+
+echo "student account copying completed"
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "student account copying completed"
+	fi
+sleep 3
+echo "all copying completed"
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "all copying completed"
+	fi
+echo ""
+sleep 3
+echo ""
+echo "Restore Process Completed"
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "Restore Process Completed"
+	fi
+
+#receipts
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "adding receipts"
+	fi
+/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart - configure -computerinfo -set4 -4 "DataRestore"
+touch /Users/admin/Desktop/Receipts/DataRestore
+
+exit
+
+
+—————————————————————————
+Below this line is the “Renamer” script
+—————————————————————————
+
+#!/bin/sh
+###
+#Portions of this script were written by Justin Cole (with some assistance from a variety of people and the use of his GoogleFu); the remainder originated in the RENAMER package that was freely shared to the MLTI tech leads. If you recall who created that script please update the attribution text and notify Justin so that he may do the same.
+#It can be run from the command line (use sudo) or it can be called by the apps included in his "Better Imager"
+#It appears to work as expected but you are using it at your own risk.
+#It may be freely used/modified/etc by any school that can make use of it to enhance their Apple deployment - Please leave attribute commentary intact.
+###
+#This section determines whether to use verbose mode on this script or not. 
+
+#sets default state
+Verbose=No
+Voice=fred
+
+#tests for verbose-enable flag
+[ -f /Users/admin/Desktop/Scripts/Verbose_Yes ] && Verbose=Yes
+
+#if uncommented the following lines will set the voice to the contents of Verbose_Yes - commented as there is no error correction on this 
+#	if [ $Verbose = 'Yes' ]; then
+#		Voice=`cat /Users/admin/Desktop/Scripts/Verbose_Yes `
+#	fi
+
+
+#Misc variables that are needed
+Underscore="_"
+All="All"
+cat="cat "
+ScriptsPath="/Users/admin/Desktop/Scripts/"
+txt=".txt"
+TypeLoadFile="NULL"
+
+#Default imaging statusses
+Type="NULL"
+School="NULL"
+Grade="NULL"
+
+#set -xv
+#exec 1>>/tmp/log 2>&1
+
+##
+# RENAMER Configuration script
+##
+
+. /etc/rc.common
+
+ConsoleMessage "Starting RENAMER configuration"
+
+# Set host name and Rendezvous name uniquely according to the MAC addr
+# It only sets the name if the $nameDone file is missing
+# AFPMods also take place to utilize username in computername
+
+#HS Grad year of 8th graders needs to be put on the following line - this will need to be updated each year
+Mindstorm="16"
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "8th Grade Variable Set"
+	fi
+
+something="Unassigned"
+nameDone=/Users/admin/Desktop/Scripts/name_done
+nameList=/Users/admin/Desktop/Scripts/name_table.csv
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "name table file set"
+	fi
+
+# Get the OS version, this will return something like 10.3.2 or 10.2.6
+VERS=`sw_vers | grep ProductVersion | cut -d: -f2`
+
+if ( [ `echo $VERS | grep 10.5` ] ) then
+    # This is Leopard so set ARDPATH to /usr/sbin
+    ARDPATH="/usr/sbin"
+elif ( test -f "/usr/sbin/systemsetup" ) then
+	ARDPATH="/usr/sbin"
+else
+    # This is not Leopard, so use ARDAgent.app/Contents/Support
+    ARDPATH="/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Support"
+fi
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "O S X version captured"
+	fi
+
+
+# get the hardware address of the hard wired ethernet port 
+#hwaddress=`/sbin/ifconfig en0 | grep ether | cut -f2 -d' '`
+# without ":" characters
+hwAddress=`ifconfig en0 | awk '/ether/ { gsub(":", ""); print $2 }'`
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "MAC address captured"
+	fi
+
+
+if ( test -f ${nameDone}) then
+    # name's already been changed
+    exit 0;
+else
+	# take a moment to wait for network
+	ipconfig waitall
+	
+	
+	# copy the user list MACaddress table from MyServer to local directory
+	#curl -o ${nameList} http://server/path/csvfile
+	#curl -o ${nameList} http://${nameListServer}:16080/macaddress/name_table.csv
+	
+	if (test -f ${nameList}) then
+		#NAME=`cat ${nameList} | grep $hwaddress | awk '{print $2}'`
+		# without ":" characters
+		NAME=`grep "${nameList}" -i -e$hwAddress | cut -f2 -d,`
+		HNAME=`grep "${nameList}" -i -e$hwAddress | cut -f3 -d,`
+#added lines by Justin Cole to collect user's First Name, Last Name and Homeroom and Building from spreadsheet
+        FirstName=`grep "${nameList}" -i -e$hwAddress | cut -f4 -d,`
+        LastName=`grep "${nameList}" -i -e$hwAddress | cut -f5 -d,`
+		HomeRoom=`grep "${nameList}" -i -e$hwAddress | cut -f6 -d,`
+		Grade=`grep "${nameList}" -i -e$hwAddress | cut -f7 -d,`
+		School=`grep "${nameList}" -i -e$hwAddress | cut -f8 -d,`
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "user variables captured"
+		fi
+
+	else
+	   # owner unknown - label generic with last 3 bytes of hwaddress - original code
+		NAME=${something}"-"`echo UNKNOWN ${hwaddress} | awk '{ print substr($0, length($0) - 5, length($0)) }'`
+		HNAME=$NAME
+		say "ATTENTION"
+		sleep 2
+		say "ATTENTION"
+		sleep 2
+		say "ATTENTION"
+		sleep 2
+		say "Laptop not in name table. Exiting Program."
+		sleep 2
+		say "warning"
+		sleep 2
+		touch /Users/admin/Desktop/LAPTOP_NOT_FOUND
+		exit 0;
+	fi
+	
+	# $nameDone file will contain record of naming convention used... 
+	# ($nameDone file can then be used for debugging, if necessary)
+	echo "$NAME" $HNAME > $nameDone
+	${ARDPATH}/systemsetup -setcomputername $NAME >> $nameDone
+	${ARDPATH}/systemsetup -setlocalsubnetname $HNAME >> $nameDone
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "Laptop has been named"
+	fi
+
+
+	#added lines by Justin Cole to input user's First Name, Last name and Homeroom into the custom ARD fields
+	/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -computerinfo -set1 -1 "$LastName"
+	/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -computerinfo -set2 -2 "$FirstName"
+	/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -computerinfo -set3 -3 "$HomeRoom"
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "custom fields set in A R D"
+	fi
+
+	#TAG the building code automatically
+	touch /Users/admin/Desktop/Tags/$School
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "building is " $School
+	fi
+
+	#TAG the staff / student code automatically
+	if [ $Grade = 'Staff' ]; then
+		Type="Staff"
+		touch /Users/admin/Desktop/Tags/Staff
+		else
+		Type="Student"
+		touch /Users/admin/Desktop/Tags/Student
+	fi
+
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "Laptop type is " $Type
+	fi
+
+
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "unzipping files"
+	fi
+	#Lego Mindstorms
+	if [ $Grade = $Mindstorm ]; then
+		unzip /Users/admin/Desktop/Packages/LEGO.zip -d /Users/admin/Desktop/Packages/
+		touch /Users/admin/Desktop/Tags/8th
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "lego mind storms unzipped"
+		fi
+		else
+		touch /Users/admin/Desktop/Tags/NOT_8th
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "no lego package"
+		fi
+	fi
+	
+	LoadFileAll=$School$Underscore$All$txt
+	touch /Users/admin/Desktop/Receipts/$LoadFileAll
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "Load file all is " $LoadFileAll
+	fi
+
+#	mylist=`$cat$ScriptsPath$LoadFileAll`
+	mylist=`cat /Users/admin/Desktop/Scripts/$LoadFileAll `
+
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "starting building all loop"
+		fi
+	for filename in $mylist
+	do
+		unzip /Users/admin/Desktop/Packages/$filename -d /Users/admin/Desktop/Packages/
+		rm -rf /Users/admin/Desktop/Packages/__MACOSX
+		echo $filename "unzipped"
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice $filename "unzipped"
+		fi
+	done
+
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "ending building all loop"
+		fi
+
+	TypeLoadFile=$School$Underscore$Type$txt
+	touch /Users/admin/Desktop/Receipts/$TypeLoadFile
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "load file type is " $TypeLoadFile
+		fi
+
+	TypeList=`cat /Users/admin/Desktop/Scripts/$TypeLoadFile `
+
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "starting building type loop"
+		fi
+	for filename in $TypeList
+	do
+		unzip /Users/admin/Desktop/Packages/$filename -d /Users/admin/Desktop/Packages/
+		echo $filename "unzipped"
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice $filename "unzipped"
+		fi
+		rm -rf /Users/admin/Desktop/Packages/__MACOSX
+		sleep 5
+	done
+
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "ending building type loop"
+		fi
+
+fi
+#receipts
+		if [ $Verbose = 'Yes' ]; then
+			say -v $Voice "adding receipts"
+		fi
+/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart - configure -computerinfo -set4 -4 "RENAMER"
+touch /Users/admin/Desktop/Receipts/RENAMER
+
+
+
+—————————————————————————
+Below this line is the “Cleanup” script
+—————————————————————————
+#!/bin/sh
+###
+#This script was written by Justin Cole (with some assistance from a variety of people and the use of his GoogleFu).
+#It can be run from the command line (use sudo) or it can be called by the apps included in his "Better Imager"
+#It appears to work as expected but you are using it at your own risk.
+#It may be freely used/modified/etc by any school that can make use of it to enhance their Apple deployment - Please leave attribute commentary intact.
+###
+
+#This section determines whether to use verbose mode on this script or not. 
+
+#sets default state
+Verbose=No
+Voice=fred
+
+#tests for verbose-enable flag
+[ -f /Users/admin/Desktop/Scripts/Verbose_Yes ] && Verbose=Yes
+
+#if uncommented the following lines will set the voice to the contents of Verbose_Yes - commented as there is no error correction on this 
+#	if [ $Verbose = 'Yes' ]; then
+#		Voice=`cat /Users/admin/Desktop/Scripts/Verbose_Yes `
+#	fi
+
+
+#Change admin password
+AdminPassword=`cat /Users/admin/Desktop/Scripts/AdminPassword `
+sudo dscl . -passwd /Users/admin $AdminPassword
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "admin password updated"
+	fi
+
+#Cleanup
+sudo rm -rf /Users/admin/Desktop/Packages
+#the check for verbose and corresponding reading.
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "packages folder removed"
+	fi
+sudo rm -rf /Users/admin/Desktop/Scripts
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "scripts folder removed"
+	fi
+sudo rm -rf /Users/admin/Desktop/Tags
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "tags folder removed"
+	fi
+
+sudo rm /Users/admin/Desktop/RUN\ ME.zip
+sudo rm -rf /Users/admin/Desktop/RUN\ ME.app
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "RUN ME app removed"
+	fi
+
+unzip /Users/admin/Desktop/Start\ Imaging\ v1.1.zip -d /Users/admin/Desktop
+sudo rm /Users/admin/Desktop/Start\ Imaging\ v1.1.zip
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "Star imaging zip file removed"
+	fi
+sudo rm -rf /Users/admin/Desktop/__MACOSX
+sudo rm -f /*Payload.rtf
+sudo rm -f /*payload.rtf
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "other waste removed"
+	fi
+
+#receipts
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "adding receipts"
+	fi
+
+/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart - configure -computerinfo -set4 -4 "FreshImage"
+touch /Users/admin/Desktop/Receipts/FreshImage
+
+
+#Shut down computer
+	if [ $Verbose = 'Yes' ]; then
+		say -v $Voice "shutting down now"
+	fi
+sudo shutdown -h now
+
+
+</code>
+</pre>
+
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

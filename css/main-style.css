@@ -1,0 +1,135 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    background-color: #FFFFFF;
+}
+
+.page-header {
+  border-bottom: 2px dotted #f4364c;
+}
+
+.portfolio-item {
+    margin-bottom: 25px;
+}
+
+ul{
+  vertical-align:bottom;
+}
+
+.navbar-default{
+    background-color: #01426a;
+    color: #fff;
+}
+
+.navbar-nav ul{
+    vertical-align:bottom;
+}
+
+.navbar-nav li a{
+    font-size: 25px;
+    font-weight: 500;
+    font-variant: small-caps;
+    color: #fff;
+    text-shadow: 2px 2px 2px #012c4f;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: #6ECEB2;
+    text-shadow: 2px 2px 2px #012c4f;
+    background-color: transparent;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #FFF;
+    text-shadow: 2px 2px 2px #012c4f;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    /* background-color: #FFF; */
+}
+
+.hr {
+    border-bottom: 2px dotted #f4364c;
+}
+
+.welcome {
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    font-weight: 900;
+    font-size: 24pt;
+    color: #040404;
+}
+
+.contact{
+    text-align: center;
+}
+
+.contact iframe{
+    display: inline-block;
+}
+
+.project {
+    position: relative;
+}
+
+.project iframe {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+}
+
+#content {
+    margin: 25px;
+}
+
+.csimpact{
+    border:  2px dotted #f4364c;
+}
+
+.section_header {
+    font-size: 24pt;
+    text-align: left;
+    color: #8fc4f0;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px #012c4f;
+}
+
+.job_title {
+    font-size: 14pt;
+    text-align: left;
+    color: #040404;
+    font-weight: bold;
+}
+.company_info {
+    font-size: 14pt;
+    text-align: left;
+    color: #040404;
+    text-indent: 50px;
+}
+.company_location {
+    position: relative;
+}
+.job_dates {
+    font-size: 14pt;
+    text-align: left;
+    color: #040404;
+    font-weight: bold;
+    text-indent: 100px;
+}
+.job_bullets_main {
+    position: relative;
+}
+.job_bullets_sub {
+    position: relative;
+}
+.content {
+    font-size: 12pt;
+    text-align: left;
+    color: #040404;
+}
+
+.row img {
+    border-color: black;
+    border: 1px;
+}

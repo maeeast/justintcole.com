@@ -1,0 +1,66 @@
+{
+	"Jobs":[
+		{
+		 "JobTitle":"Title of Job Goes Here",
+		 "JobDuration":{
+			"JobStart":"DATE",
+			"JobEnd":"DATE",
+			"JobDuration"
+			}
+		 "JobCategories":[
+			{"Category":"Customer Support / Service","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"General IT","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"IT Management","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Project Management","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Business Analyst","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Sales","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Financial Responsibility","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Retail","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Theatre","Weight":NUMBER,"Net":NUMBER}
+		 ],
+		"Employer":{
+			"EmployerName":"Employer Name Goes Here",
+			"EmployerAddress1":"Address Line 1 Goes Here",
+			"EmployerAddress2":"Address Line 2 Goes Here",
+			"EmployerCity":"Employer City Goes Here",
+			"EmployerState":"Employer State Goes Here",
+			"EmployerZip":"Employer Zip Goes Here",
+			"EmployerWeb":"Employer Website URL goes here",
+			"ExployerPhone":"Employer Phone Goes Here"
+			},
+		"Supervisors":[
+			{"Supervisor":"SupervisorName":"Supervisor Name","SupervisorEmail":"email","SupervisorPhone":"Phone Number"},
+			],
+		"ReasonForLeaving":"Reason statement goes here",
+		"JobDescription":"Description text goes here",
+		"JobBullets":[
+			{"Bullet":"Bullet Text Goes Here","BulletCategory":"Category Label"},
+			],
+		"JobAwards":{
+			"Award":"Award / Acclaimation text goes here",
+			},
+
+
+		},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	]
+}

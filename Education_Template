@@ -1,0 +1,62 @@
+{
+	"Training":[
+		{
+		 "TrainingTitle":"Title of Training Goes Here",
+		 "TrainingDuration":{
+			"TrainingStart":"DATE",
+			"TrainingCompletion":"DATE",
+			"JobDuration"
+			}
+		 "JobCategories":[
+			{"Category":"Customer Support / Service","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"General IT","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"IT Management","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Project Management","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Business Analyst","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Sales","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Financial Responsibility","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Retail","Weight":NUMBER,"Net":NUMBER},
+			{"Category":"Theatre","Weight":NUMBER,"Net":NUMBER}
+		 ],
+		"Presenter":{
+			"PresenterName":"Employer Name Goes Here",
+			"PresenterAddress1":"Address Line 1 Goes Here",
+			"PreenterAddress2":"Address Line 2 Goes Here",
+			"PresenterCity":"Employer City Goes Here",
+			"PresenterState":"Employer State Goes Here",
+			"PresenterZip":"Employer Zip Goes Here",
+			"PresenterWeb":"Employer Website URL goes here",
+			"PreenterPhone":"Employer Phone Goes Here"
+			},
+		"TrainingDescription":"Description text goes here",
+		"TrainingDocuments":[
+			{"Document":"DocumentExplaination","DocumentLink":"URL"},
+			],
+		"TrainingAwards":{
+			"Award":"Award / Acclaimation text goes here",
+			},
+
+
+		},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	]
+}
