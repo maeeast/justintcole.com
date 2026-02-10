@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link href="css/main-style.css" rel="stylesheet" />
+
+  <!-- jQuery -->
+  <script src="js/jquery.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- PDF export (client-side) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <title>Justin T. Cole - Career Summary / Resume</title>
+
+  <style>
+    .filters {
+      margin: 10px 0 20px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+    .muted { color: #777; }
+    .no-results {
+      padding: 12px;
+      border: 1px dashed #bbb;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    /* Hide UI chrome when printing (fallback path) */
+    @media print {
+      #header, #footer, .filters, .section_header, .welcome { display: none !important; }
+      #resumePrintable { margin-top: 0 !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header"></div>
+  <br />
+
+  <div id="content">
+    <div class="container">
+      <div class="welcome">
+        Summary of Justin T. Cole's Career
+      </div>
+
+      <div class="section_header">
+        Resume Maker
+      </div>
+
+      <div class="content">
+        <div class="filters">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="workTypeSelect">Type of work</label>
+              <select id="workTypeSelect" class="form-control"></select>
+            </div>
+
+            <div class="col-sm-4">
+              <label for="yearsBackSelect">How far back</label>
+              <select id="yearsBackSelect" class="form-control"></select>
+              <p class="help-block muted" style="margin-top:6px;">
+                If job dates aren’t present, “how far back” won’t exclude that role.
+              </p>
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 25px;">
+              <div class="btn-group" style="width:100%;">
+                <button id="downloadPdfBtn" class="btn btn-primary" style="width:50%;">Download PDF</button>
+                <button id="resetFilters" class="btn btn-default" style="width:50%;">Reset</button>
+              </div>
+              <div class="muted" style="margin-top:8px;">
+                <span id="resultsSummary"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- This is exactly what exports to PDF -->
+        <div id="resumePrintable">
+          <div style="margin-bottom:12px;">
+            <h3 style="margin-top:0;">Justin T. Cole</h3>
+            <div class="muted" id="pdfSubtitle"></div>
+          </div>
+          <div id="resumeContainer"></div>
+        </div>
+
+        <hr />
+
+        <!-- Keep your Written References section intact -->
+        <div class="section_header">Resum&eacute;s and References</div>
+        <div class="content">
+          <div class="section_header">Written References</div>
+          <div class="content">
+            <div class="row">
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Karen_Rec.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/karen.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Karen_Rec.pdf" target="_blank">Karen Baldwin-Payne - 02/24/2014</a>
+                </h6>
+              </div>
+
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Bean_Rec.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/bean.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Bean_Rec.pdf" target="_blank">Lawrence Bean - ~2005</a>
+                </h6>
+              </div>
+
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Greenlaw_Rec1.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/greenlaw.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Greenlaw_Rec1.pdf" target="_blank">Rick Greenlaw #1 - 01/15/2007</a>
+                </h6>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Greenlaw_Rec2.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/greenlaw.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Greenlaw_Rec2.pdf" target="_blank">Rick Greenlaw #2 - 01/15/2007</a>
+                </h6>
+              </div>
+
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Liberty_Rec.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/liberty.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Liberty_Rec.pdf" target="_blank">Michael Liberty - 06/30/2009</a>
+                </h6>
+              </div>
+
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Marquis_Rec.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/marquis.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Marquis_Rec.pdf" target="_blank">Stephen Marquis - 05/02/2006</a>
+                </h6>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Price_Rec.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/price.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Price_Rec.pdf" target="_blank">Kyle Price - 02/21/2014</a>
+                </h6>
+              </div>
+
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Talbot_Rec.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/talbot.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Talbot_Rec.pdf" target="_blank">Richard Talbot - 04/26/2006</a>
+                </h6>
+              </div>
+
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Thibitout_Rec.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/thibitout.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Thibitout_Rec.pdf" target="_blank">Peter Thibitout - 05/31/2011</a>
+                </h6>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 portfolio-item">
+                <a href="Recommendations/JustinCole_Versel_Rec.pdf" target="_blank">
+                  <img class="img-responsive" src="Recommendations/versel.PNG" alt="">
+                </a>
+                <h6>
+                  <a href="Recommendations/JustinCole_Versel_Rec.pdf" target="_blank">David Versel - 04/27/2006</a>
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.content -->
+    </div><!-- /.container -->
+  </div><!-- /#content -->
+
+  <div id="footer"></div>
+
+  <!-- Data + logic -->
+  <script src="js/resume-data.js"></script>
+  <script src="js/resume.js"></script>
+
+  <script>
+    $("#header").load("includes/header.html");
+    $("#footer").load("includes/footer.html");
+    $(window).resize(function () {
+      $("#content").css("padding-top", parseInt($(".navbar").css("height")) + 5);
+    });
+  </script>
+</body>
+</html>
